@@ -1,4 +1,8 @@
 ### 
+## Script will deliver Events from Eventlog of different Exchange Servers to an HTML Report
+## Script V1.1
+## Date 09.02.2021
+## Code from Claudius Rücker
 #load EMS
 $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://<ExchangeServerName>/PowerShell/ -Authentication Kerberos
 Import-PSSession $Session -DisableNameChecking
