@@ -4,9 +4,15 @@
 ## Date 09.02.2021
 ## Code from Claudius Rücker
 #load EMS
-$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://<ExchangeServerName>/PowerShell/ -Authentication Kerberos
-Import-PSSession $Session -DisableNameChecking
 
+#hole die Exchange Server
+$exservers = @()
+$exservers = Get-ADGroup -Identity "Exchange Servers" |Get-ADGroupMember
+$exservertoconect = $exservers[0].name
+
+#load EMS
+$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://$exservertoconect/PowerShell/ -Authentication Kerberos
+Import-PSSession $Session -DisableNameChecking
 
 $time = (Get-Date) - (New-TimeSpan -Day 1)
 $Ergebnisse = @()
