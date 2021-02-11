@@ -11,6 +11,7 @@
 #add multiple DAG support
 #add run as admin check (powershell v4 needed)
 #add MailboxDatabaseCopyStatus
+#Execute .\TestExchange.ps1 if the certifcate is from a public CA else run .\TestExchange.ps1 -$trustcert:$false
 #######################################
 
 [CmdletBinding()]
