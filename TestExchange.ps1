@@ -1,18 +1,29 @@
-#######################################
-#Exchange Server Test Script
-#Test all functions of an Exchange Server
-#V1.5 by Claudius Rücker
-#Date 27.10.2020
-#Last Modified 01.12.2020
-#last added:
-#checkand create path for logfile if needed
-#check if EMS is loaded
-#check if run on an exchange server
-#add multiple DAG support
-#add run as admin check (powershell v4 needed)
-#add MailboxDatabaseCopyStatus
-#Execute .\TestExchange.ps1 if the certifcate is from a public CA else run .\TestExchange.ps1 -$trustcert:$true
-#######################################
+<#
+.SYNOPSIS
+  Exchange Server Function Test Script
+.DESCRIPTION
+  Test all functions of an Exchange Server
+.PARAMETER $trustcert
+    This allows you to define if you want trust self signed Certificates on the Exchange (not mandatory)
+.INPUTS
+  $true or $false
+.OUTPUTS
+  Log file stored in C:\temp\TestExFunctions.log
+.NOTES
+  Version:        1.5
+  Author:         Claudius Rücker
+  Creation Date:  27.10.2020
+  Purpose/Change:
+  checkand create path for logfile if needed
+  check if EMS is loaded
+  check if run on an exchange server
+  add multiple DAG support
+  add run as admin check (powershell v4 needed)
+  add MailboxDatabaseCopyStatus
+  
+.EXAMPLE
+  .\TestExFunctions.ps1 -trustcert:$true
+#>
 
 [CmdletBinding()]
 param (
