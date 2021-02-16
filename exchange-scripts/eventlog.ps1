@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Exchange Server Evetnlog Script Script
+  Exchange Server Eventlog Script
 .DESCRIPTION
   Find all Exchange Server and greps the eventlog and show the output in a html file
 .PARAMETER $trustcert
