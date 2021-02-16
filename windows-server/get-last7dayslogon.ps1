@@ -2,7 +2,7 @@
 .SYNOPSIS
   Windows Server Security Log Script
 .DESCRIPTION
-  Find all user who haved loged on the past 7 day
+  Find all users who haved loged on this server in the last 7 days
 .PARAMETER $trustcert
     none
 .INPUTS
@@ -18,8 +18,6 @@
 .EXAMPLE
   .\get-last7dayslogon.ps1
 #>
-
-#who has loged on in the last 7 days on a windows server
 
 $logs = get-eventlog system -ComputerName $env:COMPUTERNAME -source Microsoft-Windows-Winlogon -After (Get-Date).AddDays(-7)
 $res = @()
