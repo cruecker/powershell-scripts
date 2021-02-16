@@ -1,3 +1,24 @@
+<#
+.SYNOPSIS
+  Exchange Server Evetnlog Script Script
+.DESCRIPTION
+  Find all Exchange Server and greps the eventlog and show the output in a html file
+.PARAMETER $trustcert
+    none
+.INPUTS
+  none
+.OUTPUTS
+  Log file stored in the foler from where you run the script
+.NOTES
+  Version:        1.0
+  Author:         Claudius Rücker
+  Creation Date:  16.02.2021
+  Purpose/Change: none
+  
+.EXAMPLE
+  .\eventlog.ps1
+#>
+
 ### 
 #hole die Exchange Server
 $exservers = @()
