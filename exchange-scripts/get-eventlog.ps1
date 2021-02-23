@@ -16,7 +16,7 @@
   Purpose/Change: none
   
 .EXAMPLE
-  .\eventlog.ps1
+  .\get-eventlog.ps1
 #>
 
 ### 
