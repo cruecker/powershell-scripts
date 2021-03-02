@@ -1,38 +1,30 @@
-<#
-.SYNOPSIS
-  Exchange Server Function Test Script
-.DESCRIPTION
-  Test all functions of an Exchange Server
-.PARAMETER $trustcert
-    This allows you to define if you want trust self signed Certificates on the Exchange (not mandatory)
-.INPUTS
-  $true or $false
-.OUTPUTS
-  Log file stored in C:\temp\TestExFunctions.log
-.NOTES
-  Version:        1.5
-  Author:         Claudius Rücker
-  Creation Date:  27.10.2020
-  Purpose/Change:
-  checkand create path for logfile if needed
-  check if EMS is loaded
-  check if run on an exchange server
-  add multiple DAG support
-  add run as admin check (powershell v4 needed)
-  add MailboxDatabaseCopyStatus
-  
-.EXAMPLE
-  .\TestExFunctions.ps1 -trustcert:$true
-#>
+#######################################
+#Exchange Server Test Script
+#Test all functions of an Exchange Server
+#V1.6 by Claudius Rücker
+#Date 27.10.2020
+#Last Modified 02.03.2020
+#last added:
+#checkand create path for logfile if needed
+#check if EMS is loaded
+#check if run on an exchange server
+#add multiple DAG support
+#add run as admin check (powershell v4 needed)
+#add MailboxDatabaseCopyStatus
+#extend IMAP and POP Test
+#requieres extended
+#######################################
 
+# Definition der Parameter
 [CmdletBinding()]
 param (
-    [Parameter()]
-    [bool]
-    $trustcert
-) 
+    [bool] $trustcert = $false,
+    [bool] $popenabled = $false,
+    [bool] $imapenabled = $false
+    )
 
 #Requires -RunAsAdministrator
+#Requires -Version 4.0
 
 #clean screen
 clear-host
@@ -149,21 +141,25 @@ if (!$MAPIConnectivity) {Write-Host "`nTest-MAPIConnectivity ok!" -ForegroundCol
    else {Write-Host "`nTest-MAPIConnectivity not ok!" -ForegroundColor red
            $MAPIConnectivity | Out-Host}
 
- 
-
 #Test ImapConnectivity
 $ImapConnectivity = $null
-$ImapConnectivity = Test-ImapConnectivity | where {$_.Result -notlike "Success"}
-if (!$ImapConnectivity) {Write-Host "`nTest-ImapConnectivity ok!" -ForegroundColor Green}
-   else {Write-Host "`nTest-ImapConnectivity not ok!" -ForegroundColor red
-           $ImapConnectivity | Out-Host}
+if ($imapenabled -eq $true) {
+                            $ImapConnectivity = Test-ImapConnectivity | where {$_.Result -notlike "Success"}
+                            if (!$ImapConnectivity) {Write-Host "`nTest-ImapConnectivity ok!" -ForegroundColor Green}
+                                else {Write-Host "`nTest-ImapConnectivity not ok!" -ForegroundColor red
+                                    $ImapConnectivity | Out-Host}
+                            }
+    Else {Write-host "`nTest-ImapConnectivity not executed as wished!" -ForegroundColor yellow}
 
 #Test PopConnectivity
 $popConnectivity = $null
-$popConnectivity = Test-ImapConnectivity | where {$_.Result -notlike "Success"}
-if (!$popConnectivity) {Write-Host "`nTest-PopConnectivity ok!" -ForegroundColor Green}
-   else {Write-Host "`nTest-PopConnectivity not ok!" -ForegroundColor red
-           $popConnectivity | Out-Host}
+if ($popenabled -eq $true) {
+                    $popConnectivity = Test-PopConnectivity | where {$_.Result -notlike "Success"}
+                            if (!$popConnectivity) {Write-Host "`nTest-PopConnectivity ok!" -ForegroundColor Green}
+                                else {Write-Host "`nTest-PopConnectivity not ok!" -ForegroundColor red
+                                    $popConnectivity | Out-Host}
+                    }
+    Else {Write-host "`nTest-PopConnectivity not executed as wished!" -ForegroundColor yellow}
 
 #test SmtpConnectivity
 $SmtpConnectivity = $null
