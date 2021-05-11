@@ -1,19 +1,24 @@
-#######################################
-#Exchange Server Test Script
-#Test all functions of an Exchange Server
-#V1.6 by Claudius Rücker
-#Date 27.10.2020
-#Last Modified 02.03.2020
-#last added:
-#checkand create path for logfile if needed
-#check if EMS is loaded
-#check if run on an exchange server
-#add multiple DAG support
-#add run as admin check (powershell v4 needed)
-#add MailboxDatabaseCopyStatus
-#extend IMAP and POP Test
-#requieres extended
-#######################################
+<#
+.SYNOPSIS
+  Testen der Exchange Server
+.DESCRIPTION
+  Führt diverse Tests durch um zu gewaehrleisten, dass das Exchange System sauber funktioniert 
+.PARAMETER
+    trustcert --> bei Selfsinged Zertifikaten auf $true setzten
+    popenabled --> zum Testen von pop3 auf $true setzten
+    imapenabled --> zum Testen von imap auf $true setzten
+.INPUTS
+  none
+.OUTPUTS
+  none
+.NOTES
+  Version:        1.6
+  Author:         Claudius Rücker
+  Creation Date:  27.10.2020
+    
+.EXAMPLE
+  .\Test-Exchange.ps1 -trustcert $true -popenabled $true -imapenabled $true
+#>
 
 # Definition der Parameter
 [CmdletBinding()]
