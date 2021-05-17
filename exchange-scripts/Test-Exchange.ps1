@@ -43,7 +43,7 @@ If(!(test-path $path))
       New-Item -ItemType Directory -Force -Path $path
       Write-Host "Logpfad angelegt unter:" $path
     }
-    else {Write-Host "Es wird in" $path "geloggt. Das Log heisst TestExFunctions.log" -ForegroundColor Magenta}
+    else {Write-Host "Es wird in" $path "geloggt. Das Log heist TestExFunctions.log" -ForegroundColor Magenta}
 
 #Start Logging
 Start-Transcript C:\temp\TestExFunctions.log
@@ -261,8 +261,8 @@ If ($AllOk -eq $false){
 #TestCertificate
 $TestCertificate = $null
 $TestCertificate = Get-WinEvent -FilterHashtable @{logname='application'; starttime=$time; Id='12017','12018'}
-if (!$TestCertificate) {Write-Host "`nTestCertificate ok!" -ForegroundColor Green}
-   else {Write-Host "`nTestCertificate not ok! Please check the application log for the Events 12017 or 12018" -ForegroundColor red}
+if (!$TestCertificate) {Write-Host "`nTest-Certificate ok!" -ForegroundColor Green}
+   else {Write-Host "`nTest-Certificate not ok! Please check the application log for the Events 12017 or 12018" -ForegroundColor red}
 
 
 Stop-Transcript
