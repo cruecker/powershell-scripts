@@ -4,21 +4,23 @@
 .DESCRIPTION
   Führt diverse Tests durch um zu gewaehrleisten, dass das Exchange System sauber funktioniert 
 .PARAMETER
-    trustcert --> bei Selfsinged Zertifikaten auf $true setzten
-    popenabled --> zum Testen von pop3 auf $true setzten
-    imapenabled --> zum Testen von imap auf $true setzten
+    trustcert --> if Selfsinged Zertifikaten set to $true
+    popenabled --> to test pop3 set this to $true
+    imapenabled --> to test pop3 set this to $true
 .INPUTS
   none
 .OUTPUTS
   none
 .NOTES
-  Version:        1.6
+  Version:        1.7
   Author:         Claudius Rücker
   Creation Date:  27.10.2020
-    
+.last change
+    test if certificates will expire soon
 .EXAMPLE
   .\Test-Exchange.ps1 -trustcert $true -popenabled $true -imapenabled $true
 #>
+
 
 # Definition der Parameter
 [CmdletBinding()]
@@ -77,6 +79,7 @@ $adSiteGuidLeft13 = $servername.Site.ObjectGuid.ToString().Replace("-","").Subst
 $UserName = "extest_" + $adSiteGuidLeft13;
 $DAGServer = (Get-DatabaseAvailabilityGroup | where {$_.Servers -like "*$env:COMPUTERNAME"}).Name
 $ExVersion = (Get-ExchangeServer -Identity $env:COMPUTERNAME).admindisplayversion.minor
+$time = (Get-Date) - (New-TimeSpan -Day 1)
 
 #move testuser to a database on server which shhould be tested
 #check if user is homed on the server where the script runs
@@ -254,6 +257,12 @@ If ($AllOk -eq $false){
     Else {
     Write-Host "`nTest-Mailbox Database Copy Status ok!" -ForegroundColor Green
             }
+
+#TestCertificate
+$TestCertificate = $null
+$TestCertificate = Get-WinEvent -FilterHashtable @{logname='application'; starttime=$time; Id='12017','12018'}
+if (!$TestCertificate) {Write-Host "`nTestCertificate ok!" -ForegroundColor Green}
+   else {Write-Host "`nTestCertificate not ok! Please check the application log for the Events 12017 or 12018" -ForegroundColor red}
 
 
 Stop-Transcript
