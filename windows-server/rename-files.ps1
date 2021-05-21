@@ -14,19 +14,20 @@
   Author:         Claudius Rücker
   Creation Date:  11.05.2021
   Purpose/Change: none
+  es wird nach alles _21 gelöscht und die Datei in ein anderes Verzeichnis geschoben
   
 .EXAMPLE
   .\rename-files.ps1
 #>
 
-$Quellpfad = "<ursprungspfad>"
-$Zielpfad = "<zielpfad>"
+$Quellpfad = "<pfad eintragen>"
+$Zielpfad = "<pfad eintragen>"
 
 $files = Get-ChildItem $Quellpfad
 $files
 
 ForEach ($file in $files) {
-                                    $Name = ($file.name -split "_11" | Select -First 1).Trim()
+                                    $Name = ($file.name -split "_21" | Select -First 1).Trim()
                                     Move-Item -Path "$Quellpfad\$file" -Destination "$Zielpfad\$name" #-WhatIf
+                                    Write-Host "moved to" $Zielpfad\$name -ForegroundColor Green
                                     }
-
