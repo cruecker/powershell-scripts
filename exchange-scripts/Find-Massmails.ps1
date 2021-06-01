@@ -29,10 +29,15 @@ $End = (Get-Date -Hour 23 -Minute 59 -Second 59).AddDays(-1)
 
 #Holen aller Exchange Server
 $exserver = Get-ExchangeServer | Where-Object {$_.ServerRole -eq "Mailbox"}
+$AnzahlServer = $exserver.count
+
 #$exserver
 
 #-Source "Agent" -EventID "Agentinfo" sollten dafür sorgen das nur eine Mail im Messagetracking erscheint
-$messages = $exserver | ForEach-Object {get-messagetrackinglog -server $_ -Start $Start -End $End -Source "Agent" -EventID "Agentinfo" -ResultSize Unlimited | where {$_.Recipients -NotLike "*PublicFolder*" -and $_.RecipientCount -gt "100"}} 
 
-$messages | Select-Object Sender, Recipients, RecipientCount, MessageId, ClientHostName, ClientHostName, OriginalClientIp | Out-GridView
+$messages = @()
+$messages = $exserver | ForEach-Object { 
+                                        get-messagetrackinglog -server $_ -Start $Start -End $End -Source "Agent" -EventID "Agentinfo" -ResultSize Unlimited | where {$_.Recipients -NotLike "*PublicFolder*" -and $_.RecipientCount -gt "100"}
+                                        }
 
+$messages | Select-Object Sender, Recipients, RecipientCount, MessageId, ClientHostName, OriginalClientIp | Out-GridView
