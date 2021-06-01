@@ -19,24 +19,21 @@ If ($emsloaded) {
                                        }
               }
 
-#Zurücksetzten der Errorpreference
+#Zurücksetzten der Errorpreference auf default
 $ErrorActionPreference = 'Continue'
 
 #Prüfen des MessageTrackinglogs
 #Setzten des Start und des End Datums von Gestern
-$Start = (Get-Date -Hour 00 -Minute 00 -Second 00).AddDays(-1)
+$Start = (Get-Date -Hour 00 -Minute 00 -Second 00).AddDays(-29)
 $End = (Get-Date -Hour 23 -Minute 59 -Second 59).AddDays(-1)
 
 #Holen aller Exchange Server
 $exserver = Get-ExchangeServer | Where-Object {$_.ServerRole -eq "Mailbox"}
-$AnzahlServer = $exserver.count
 
-#$exserver
-
-#-Source "Agent" -EventID "Agentinfo" sollten dafür sorgen das nur eine Mail im Messagetracking erscheint
-
+#Hauptteil des Skriptes
 $messages = @()
-$messages = $exserver | ForEach-Object { 
+$messages = $exserver | ForEach-Object {
+                                        #-Source "Agent" -EventID "Agentinfo" sollten dafür sorgen das nur eine Mail im Messagetracking erscheint 
                                         get-messagetrackinglog -server $_ -Start $Start -End $End -Source "Agent" -EventID "Agentinfo" -ResultSize Unlimited | where {$_.Recipients -NotLike "*PublicFolder*" -and $_.RecipientCount -gt "100"}
                                         }
 
