@@ -1,3 +1,24 @@
+<#
+.SYNOPSIS
+  Durchsuchen aller Exchange Server Trackinglogs nach Massenemails
+.DESCRIPTION
+  Durchsuchen aller Exchange Server Trackinglogs nach Massenemails.
+.PARAMETER
+ keine
+.INPUTS
+  keine
+.OUTPUTS
+  keine
+.NOTES
+  Version:        1.0
+  Author:         Claudius Rücker
+  Creation Date:  01.06.2021
+.last change
+  keiner
+.EXAMPLE
+  .\Find-Massmails.ps1
+#>
+
 #laden der EMS
 $ErrorActionPreference = 'SilentlyContinue'
 [bool]$emsloaded = $false
@@ -38,3 +59,4 @@ $messages = $exserver | ForEach-Object {
                                         }
 
 $messages | Select-Object Sender, Recipients, RecipientCount, MessageId, ClientHostName, OriginalClientIp | Out-GridView
+$messages | Select-Object Sender, Recipients, RecipientCount, MessageId, ClientHostName, OriginalClientIp | Out-File C:\temp\find-massmail-output.txt
