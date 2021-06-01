@@ -34,13 +34,5 @@ $exserver = Get-ExchangeServer | Where-Object {$_.ServerRole -eq "Mailbox"}
 #-Source "Agent" -EventID "Agentinfo" sollten dafür sorgen das nur eine Mail im Messagetracking erscheint
 $messages = $exserver | ForEach-Object {get-messagetrackinglog -server $_ -Start $Start -End $End -Source "Agent" -EventID "Agentinfo" -ResultSize Unlimited | where {$_.Recipients -NotLike "*PublicFolder*" -and $_.RecipientCount -gt "100"}} 
 
-<#Nachrichten sortieren und einzigartig machen
-($messagessend).Count
-#$sortmessagesend =  $messagessend | Sort-Object -Property messageid
-
-#$uniquemessagesend = Get-Unique -InputObject $sortmessagesend
-#($uniquemessagesend).count
-#>
-
 $messages | Select-Object Sender, Recipients, RecipientCount, MessageId, ClientHostName, ClientHostName, OriginalClientIp | Out-GridView
 
