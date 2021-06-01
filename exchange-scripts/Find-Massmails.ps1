@@ -8,7 +8,7 @@
 .INPUTS
   keine
 .OUTPUTS
-  keine
+  im Gridview und auf der Disk unter C:\temp\find-massmail-output.txt
 .NOTES
   Version:        1.0
   Author:         Claudius Rücker
