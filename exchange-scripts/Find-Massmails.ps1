@@ -44,7 +44,7 @@ If ($emsloaded) {
 $ErrorActionPreference = 'Continue'
 
 #Prüfen des MessageTrackinglogs
-#Setzten des Start und des End Datums von Gestern
+#Setzten des Start und des End Datums
 $Start = (Get-Date -Hour 00 -Minute 00 -Second 00).AddDays(-29)
 $End = (Get-Date -Hour 23 -Minute 59 -Second 59).AddDays(-1)
 
