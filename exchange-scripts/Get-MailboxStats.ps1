@@ -1,7 +1,10 @@
 ## Script will deliver Name, RecipientType, RecipientTypeDetails, MailboxSize, ItemCount in a CSV File
-## Script V1.1
-## Date 22.05.2020
+## Script V1.2
+## Date 07.06.2021
 ## Code from Claudius Rücker
+## Change Log:
+## Add logging
+## Load EMS
 
 #vorbereiten und starten des Transscriptes
 $datum = Get-Date -Format "ddMMyyyyHHmm"
@@ -42,8 +45,6 @@ If ($emsloaded) {
 
 #Zurücksetzten der Errorpreference auf default
 $ErrorActionPreference = 'Continue'
-
-
 
 Get-Mailbox -resultsize unlimited | Select-Object name,RecipientType,RecipientTypeDetails,@{n="Primary Size";e={(Get-MailboxStatistics $_.identity).totalItemsize}},@{n="Primary Item Count";e={(Get-MailboxStatistics $_.identity).ItemCount}} | export-csv -NoTypeInformation -Delimiter "," -Path D:\Temp\Claudius\Mailboxstats.txt
 
