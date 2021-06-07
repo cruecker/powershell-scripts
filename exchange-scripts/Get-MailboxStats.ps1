@@ -26,6 +26,7 @@ Start-Transcript D:\temp\Claudius\Log\$logname
 #laden der EMS
 $ErrorActionPreference = 'SilentlyContinue'
 [bool]$emsloaded = $false
+[bool]$emsloadedcheck = $false
 
 if(get-mailbox -ResultSize 1 -WarningAction SilentlyContinue){$emsloaded = $true}
     else{$emsloaded = $false} 
@@ -36,16 +37,25 @@ If ($emsloaded) {
 
         else {
               Write-Host "Loading Exchange Snapin. Please Wait...." -ForegroundColor Yellow
-              Add-PSSnapin Microsoft.Exchange.Management.PowerShell.E2010
-              $emsloadedcheck = Get-PSSnapin | Where-Object {$_.Name -eq "Microsoft.Exchange.Management.PowerShell.E2010"}
+              $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://<Servername>/PowerShell/ -Authentication Kerberos
+              Import-PSSession $Session -DisableNameChecking
+
+              $emsloadedcheck = if(get-mailbox -ResultSize 1 -WarningAction SilentlyContinue){$emsloadedcheck = $true}
+                                else{$emsloadedcheck = $false} 
                 
-                if ($emsloadedcheck) {
+                if ($emsloadedcheck -eq $true) {
                                        Write-Host "Exchange Snapin was successfully loaded!" -ForegroundColor Green
                                        }
+                    else {
+                          Write-Host "Exchange Snapin was not loaded!" -ForegroundColor Red
+                          Stop
+                          }
               }
 
 #Zurücksetzten der Errorpreference auf default
 $ErrorActionPreference = 'Continue'
+$ErrorActionPreference
+
 
 Get-Mailbox -resultsize unlimited | Select-Object name,RecipientType,RecipientTypeDetails,@{n="Primary Size";e={(Get-MailboxStatistics $_.identity).totalItemsize}},@{n="Primary Item Count";e={(Get-MailboxStatistics $_.identity).ItemCount}} | export-csv -NoTypeInformation -Delimiter "," -Path D:\Temp\Claudius\Mailboxstats.txt
 
