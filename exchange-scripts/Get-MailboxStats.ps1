@@ -6,9 +6,11 @@
 ## 22.05.2020
 ## Add logging
 ## Load EMS
+## Add Duration
 
 #vorbereiten und starten des Transscriptes
 $datum = Get-Date -Format "ddMMyyyyHHmm"
+$start = Get-Date
 
 $logname = "Mailboxstats$datum.log"
 $path = "D:\temp\claudius\Log"
@@ -25,6 +27,8 @@ Start-Transcript D:\temp\Claudius\Log\$logname
 
 #laden der EMS
 $ErrorActionPreference = 'SilentlyContinue'
+Write-Host "Setzen der ErrorActionPreference auf Leise: " $ErrorActionPreference -ForegroundColor Magenta
+
 [bool]$emsloaded = $false
 [bool]$emsloadedcheck = $false
 
@@ -54,10 +58,13 @@ If ($emsloaded) {
 
 #Zurücksetzten der Errorpreference auf default
 $ErrorActionPreference = 'Continue'
-$ErrorActionPreference
+Write-Host "Setzen der ErrorActionPreference auf Standard: " $ErrorActionPreference -ForegroundColor Magenta
 
 
-Get-Mailbox -resultsize unlimited | Select-Object name,RecipientType,RecipientTypeDetails,@{n="Primary Size";e={(Get-MailboxStatistics $_.identity).totalItemsize}},@{n="Primary Item Count";e={(Get-MailboxStatistics $_.identity).ItemCount}} | export-csv -NoTypeInformation -Delimiter "," -Path D:\Temp\Claudius\Mailboxstats.txt
+Get-Mailbox -resultsize unlimited | Select-Object name,RecipientType,RecipientTypeDetails,@{n="Primary Size";e={(Get-MailboxStatistics $_.identity).totalItemsize}},@{n="Primary Item Count";e={(Get-MailboxStatistics $_.identity).ItemCount}} | export-csv -NoTypeInformation -Encoding UTF8 -Delimiter "," -Path D:\Temp\Claudius\Mailboxstats$Datum.txt
+
+$end = Get-Date
+($end-$start).TotalHours
 
 #Stop Logging
 Stop-Transcript
