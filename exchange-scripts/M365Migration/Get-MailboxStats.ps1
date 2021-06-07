@@ -1,9 +1,9 @@
 ## Script will deliver Name, RecipientType, RecipientTypeDetails, MailboxSize, ItemCount in a CSV File
 ## Script V1.2
-## Creation Date 07.06.2021
+## Creation Date 22.09.2020
 ## Code from Claudius Rücker
 ## Change Date / Change Log:
-## 22.05.2020
+## 07.06.2021
 ## Add logging
 ## Load EMS
 ## Add Duration
