@@ -59,4 +59,4 @@ $messages = $exserver | ForEach-Object {
                                         }
 
 $messages | Select-Object Sender, Recipients, RecipientCount, MessageId, ClientHostName, OriginalClientIp | Out-GridView
-$messages | Select-Object Sender, Recipients, RecipientCount, MessageId, ClientHostName, OriginalClientIp | Out-File C:\temp\find-massmail-output.txt
+$messages | Select-Object Sender, Recipients, RecipientCount, MessageId, ClientHostName, OriginalClientIp | export-csv -NoTypeInformation -Encoding UTF8 -Delimiter "," -Path  $outfile
