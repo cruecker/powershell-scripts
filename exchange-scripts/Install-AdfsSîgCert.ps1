@@ -18,3 +18,19 @@ foreach ($server in $servers){
                                                        Get-ChildItem -Path $using:pathtostore$using:NewThumbp
                                                        }
 }
+
+
+$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://$server/PowerShell/ -Authentication Kerberos
+Import-PSSession $Session -DisableNameChecking
+
+
+Set-OrganizationConfig -ADFSSignCertificateThumbprint $NewThumbp
+
+foreach ($server in $servers){
+                              $Server
+                              Write-Host "Restart IIS. Please stand by!"
+                              Invoke-Command -ComputerName $server -ScriptBlock {
+                                                                                 Stop-Service was -Force
+                                                                                 Start-Service w3svc
+                                                                                 }
+                            }
