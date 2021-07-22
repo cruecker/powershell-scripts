@@ -1,3 +1,4 @@
+#copy the cert to the exchange Servers
 $servers = "<servera>","<serverb>","<serverc>","<serverd>"
 $pathtostore = "Cert:\LocalMachine\Root\"
 $Thumbp = "<Thumbprint from cert to remove>"
