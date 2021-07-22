@@ -1,6 +1,24 @@
-#Script can be user if you have a foldername containing the "/" example: "Claudius c/o Gummibaeren"
-#created by Claudius Ruecker
-#Date: 21.07.2021
+<#
+.SYNOPSIS
+  Exchange Mailbox Folder Permission Script
+.DESCRIPTION
+  Set a user permission to a mailbox folder
+.PARAMETER
+  none
+.INPUTS
+  none
+.OUTPUTS
+  none
+.NOTES
+  Version:        1.0
+  Author:         Claudius Rücker
+  Creation Date:  21.07.2021
+  Purpose/Change: none
+  Keep in mind the target is a networkpath
+  
+.EXAMPLE
+  .\Add-MailboxFolderPermissions.ps1
+#>
 
 $MailboxToAddPerm = "<emailaddress>"
 $UserToAdd = "<emailaddress>"
