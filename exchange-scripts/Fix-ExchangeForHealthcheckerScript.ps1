@@ -74,5 +74,5 @@ Set-Itemproperty -path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.
 #latest C++ Redistributeable please visit: https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads
 
 cd C:\Install\
-#.\en_visual_cpp_redistributable_for_visual_studio_2012_update_4_x64_3161523.exe
+.\en_visual_cpp_redistributable_for_visual_studio_2012_update_4_x64_3161523.exe
 .\vcredist_x64-2013.exe
