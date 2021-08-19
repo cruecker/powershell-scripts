@@ -242,24 +242,24 @@ if (!$OAuthConnectivity) {Write-Host "`nTest-OAuthConnectivity against EWS ok!" 
 $DBOutput = @()
 $DBCopy = Get-MailboxDatabaseCopyStatus -Server $env:COMPUTERNAME
 if ($ExVersion -lt "2") {
-            ForEach ($DB in $DBCopy){
+                        ForEach ($DB in $DBCopy){
             
-                if ($DB.Status -ne "Mounted" -and $DB.Status -ne "Healthy" -and $DB.ContentIndexState -ne "Healthy")
-                           {
-                               $DBOutput += $DB
-                               $AllOk=$false
-                           } 
+                            if ($DB.Status -eq "Mounted" -or $DB.Status -eq "Healthy" -and $DB.ContentIndexState -eq "Healthy") {
+                                        $DBOutput += $DB
+                                       } 
 
-                            else {
-                               $DBOutput += $DB
+                                        else {
+                                               $DBOutput += $DB
+                                               $AllOk=$false
+                                               break
+                                             }
                                     }
-                        }
                       }
     else {ForEach ($DB in $DBCopy){
     
                     if ($DB.Status -ne "Mounted" -and $DB.Status -ne "Healthy")
                            {
-                               $DBOutput += $DB
+                               $DBOutput += $DB.ToString()
                                $AllOk = $false
                            } 
 
@@ -271,7 +271,7 @@ if ($ExVersion -lt "2") {
 
 If ($AllOk -eq $false){
     Write-Host "`nTest-Mailbox Database Copy Status failed:" -ForegroundColor Red
-    $DBOutput | Select Name, Status, CopyQueueLength, ReplayQueueLength, LastInspectedLogTime, ContentIndexState | Ft
+    $DBCopy | Select Name, Status, CopyQueueLength, ReplayQueueLength, LastInspectedLogTime, ContentIndexState | Ft
                         } 
     Else {
     Write-Host "`nTest-Mailbox Database Copy Status ok!" -ForegroundColor Green
