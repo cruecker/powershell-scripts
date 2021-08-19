@@ -43,12 +43,13 @@ If(!(test-path $path))
       New-Item -ItemType Directory -Force -Path $path
       Write-Host "Logpfad angelegt unter:" $path
     }
-    else {Write-Host "Es wird in" $path "geloggt. Das Log heist TestExFunctions.log" -ForegroundColor Magenta}
+    else {Write-Host "Es wird in" $path "geloggt. Das Log heisst TestExFunctions.log" -ForegroundColor Magenta}
 
 #Start Logging
 Start-Transcript C:\temp\TestExFunctions.log
 
 #Check if EMS is loaded
+#Add-PSsnapin Microsoft.Exchange.Management.PowerShell.E2010
 try {Get-ExchangeServer | Out-Null}
         Catch [System.Management.Automation.CommandNotFoundException] {
 	              Write-Warning "This script must be run in the Exchange Management Shell"
@@ -129,11 +130,29 @@ if (!$ReplicationHealth) {Write-Host "`nTest-ReplicationHealth ok. All DB replic
            $ReplicationHealth | Out-Host}
 
 #test service health
-$Servicehealth = $null
-$Servicehealth = Test-ServiceHealth $env:computername | where {$_.RequiredServicesRunning -eq $false}
+function Get-Servicehealth{
+                  $Servicehealth = $null
+                  $Servicehealth = Test-ServiceHealth $env:computername | where {$_.RequiredServicesRunning -eq $false}
+                  }
+
+$i = 0
+Get-Servicehealth
 if (!$Servicehealth) {Write-Host "`nTest-ServiceHealth ok. Needed Services up and running!" -ForegroundColor Green}
-   else {Write-Host "`nTest-ServiceHealth not ok!" -ForegroundColor Red
-           $Servicehealth | Out-Host}
+   else {Write-Host "`nTest-ServiceHealth not ok! Trying to fix it" -ForegroundColor Yellow
+        $Servicehealth | Out-Host
+        foreach ($service in $Servicehealth.ServicesNotRunning){
+                                                                Start-Service $service
+                                                                Write-Host "Starte Service" $service -ForegroundColor Cyan
+                                                                }
+        if ($i -le 2) {Get-Servicehealth
+                        $i = $i + 1
+                        }
+            else{
+                Write-Hoste "Write-Host "`nTest-ServiceHealth not ok!" -ForegroundColor Red"
+                $Servicehealth | Out-Host
+                }
+        }
+
  
 #test Mailflow funktioniert nur wenn DB's gemountet und aktive auf dem Server sind. testet den lokaen server
 $mailflow = $null
@@ -260,9 +279,16 @@ If ($AllOk -eq $false){
 
 #TestCertificate
 $TestCertificate = $null
-$TestCertificate = Get-WinEvent -FilterHashtable @{logname='application'; starttime=$time; Id='12017','12018'}
-if (!$TestCertificate) {Write-Host "`nTest-Certificate ok!" -ForegroundColor Green}
-   else {Write-Host "`nTest-Certificate not ok! Please check the application log for the Events 12017 or 12018" -ForegroundColor red}
+try { 
+    $TestCertificate = Get-WinEvent -FilterHashtable @{logname='application'; starttime=$time; Id='12017','12018'} -ErrorAction stop
+    }
+
+catch [Exception] {
+                   if ($_.Exception -match "No events were found that match the specified selection criteria") 
+                   {Write-Host "`nTest-Certificate ok!" -ForegroundColor Green}
+                   }
+
+if ($TestCertificate) {Write-Host "`nTest-Certificate not ok! Please check the application log for the Events 12017 or 12018" -ForegroundColor red}
 
 
 Stop-Transcript
