@@ -251,7 +251,6 @@ if ($ExVersion -lt "2") {
                                         else {
                                                $DBOutput += $DB
                                                $AllOk=$false
-                                               break
                                              }
                                     }
                       }
