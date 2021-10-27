@@ -13,7 +13,8 @@ $datum = Get-Date -Format "ddMMyyyyHHmm"
 $start = Get-Date
 
 $logname = "Mailboxstats$datum.log"
-$path = "D:\temp\claudius\Log"
+$path = "c:\temp\claudius\Log"
+$translog = "C:\temp\Claudius\Log\$logname"
 
 If(!(test-path $path))
     {
@@ -22,7 +23,7 @@ If(!(test-path $path))
     }
     else {Write-Host "Es wird in" $path "geloggt. Das Log heist $logname" -ForegroundColor Magenta}
 
-Start-Transcript D:\temp\Claudius\Log\$logname
+Start-Transcript $translog
 
 
 #laden der EMS
@@ -61,7 +62,7 @@ $ErrorActionPreference = 'Continue'
 Write-Host "Setzen der ErrorActionPreference auf Standard: " $ErrorActionPreference -ForegroundColor Magenta
 
 
-Get-Mailbox -resultsize unlimited | Select-Object name,RecipientType,RecipientTypeDetails,@{n="Primary Size";e={(Get-MailboxStatistics $_.identity).totalItemsize}},@{n="Primary Item Count";e={(Get-MailboxStatistics $_.identity).ItemCount}} | export-csv -NoTypeInformation -Encoding UTF8 -Delimiter "," -Path D:\Temp\Claudius\Mailboxstats$Datum.txt
+Get-Mailbox -resultsize unlimited | Select-Object name,RecipientType,RecipientTypeDetails,@{n="Primary Size";e={(Get-MailboxStatistics $_.identity).totalItemsize.Value.ToMB()}},@{n="Primary Item Count";e={(Get-MailboxStatistics $_.identity).ItemCount}} | export-csv -NoTypeInformation -Encoding UTF8 -Delimiter "," -Path C:\Temp\Claudius\Mailboxstats$Datum.txt
 
 $end = Get-Date
 ($end-$start).TotalHours
