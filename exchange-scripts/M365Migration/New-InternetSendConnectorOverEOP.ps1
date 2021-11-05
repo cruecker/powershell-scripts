@@ -1,0 +1,1 @@
+New-SendConnector -Name "Internet Outbound over EOP" -AddressSpaces * -CloudServicesMailEnabled $true -Fqdn "<FQDN from onprem outbound>" -RequireTLS $true -DNSRoutingEnabled $false -SmartHosts "<tenantname>.mail.protection.outlook.com" -TlsAuthLevel CertificateValidation -Usage Internet -MaxMessageSize 35MB
