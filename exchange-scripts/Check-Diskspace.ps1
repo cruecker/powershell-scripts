@@ -34,7 +34,6 @@ foreach ($server in $servers) {
 $allvolumes | select PSComputerName, FilesystemLabel, @{Name="Size (GB)";Expression={[math]::round($_.size/1GB, 2)}}, @{Name="Free Diskspce (GB)";Expression={[math]::round($_.SizeRemaining/1GB, 2)}}
 
 #Byte to TB rechnen
-#$allvolumes = $allvolumes | select PSComputerName, SizeRemaining, Size | ConvertTo-Html -Fragment
 $allvolumes = $allvolumes | select PSComputerName, FilesystemLabel, @{Name="Size (GB)";Expression={[math]::round($_.size/1GB, 2)}}, @{Name="Free Diskspce (GB)";Expression={[math]::round($_.SizeRemaining/1GB, 2)}} | ConvertTo-Html -Fragment
 
 $body = $htmlhead + $allvolumes + $htmltail
