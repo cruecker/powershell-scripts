@@ -58,10 +58,9 @@ Set-Itemproperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders
 Set-Itemproperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server" -Name "DisabledByDefault" -Value "00000000" -Type "Dword"
 Set-Itemproperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server" -Name "Enabled" -Value "00000001" -Type "Dword"
 
-<##TLS 1.2 fuer .Net 4.x auf OS / schannel vererbung einstellen #erledigt
+#TLS 1.2 fuer .Net 4.x auf OS / schannel vererbung einstellen #erledigt
 Set-Itemproperty -path "HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319" -Name "SystemDefaultTlsVersions" -Value "00000001" -Type "Dword"
 Set-Itemproperty -path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319" -Name "SystemDefaultTlsVersions" -Value "00000001" -Type "Dword"
-#>
 
 #vcredist update vorher letzte Version herunterladen
 #latest C++ Redistributeable please visit: https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads
