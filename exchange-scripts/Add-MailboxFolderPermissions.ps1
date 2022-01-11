@@ -3,7 +3,7 @@
   Exchange Mailbox Folder Permission Script
 .DESCRIPTION
   Set a user permission to a mailbox folder
-.PARAMETER
+.PARAMETER Add-MailboxFolderPermissions.ps1
   none
 .INPUTS
   none
