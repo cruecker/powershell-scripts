@@ -1,0 +1,20 @@
+Import-Module AzureADPreview
+Connect-AzureADP
+
+#Definieren wann der Gastbenutzer zuletzt angemeldet war
+$queryStartDateTime = (Get-Date).AddDays(-30)
+$queryStartDateTimeFilter = '{0:yyyy-MM-dd}T{0:HH:mm:sszzz}' -f $queryStartDateTime
+
+#hole die aktiven Gastbenutzer
+$gastbenutzer = Get-AzureADUser -Filter "UserType eq 'Guest' and AccountEnabled eq true"
+Get-AzureADAuditSignInLogs -Filter "userID eq '$($gastbenutzer.ObjectID)' and createdDateTime ge $queryStartDateTimeFilter"
+
+$GastBenutzerAnmledungen = Get-AzureADAuditSignInLogs -Filter "UserID eq '$($gastbenutzer.ObjectID)' and createdDateTime ge $queryStartDateTimeFilter"
+
+
+#Blockiere den Logon
+#Set-AzureADUser -ObjectID $gastbenutzer.ObjectID -AccountEnabled $false
+
+#hole den Manager
+$manager = Get-AzureADUserManager -ObjectID $gastbenutzer.ObjectID
+
