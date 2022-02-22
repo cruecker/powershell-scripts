@@ -1,0 +1,1 @@
+Get-Mailbox -resultsize unlimited | Select-Object name, DisplayName, PrimarySmtpAddress, RecipientType,RecipientTypeDetails,@{n="Primary Size";e={(Get-MailboxStatistics $_.identity).totalItemsize.Value.ToMB()}},@{n="Primary Item Count";e={(Get-MailboxStatistics $_.identity).ItemCount}} | export-csv -NoTypeInformation -Encoding UTF8 -Delimiter "," -Path C:\Temp\Mailboxstats.txt
