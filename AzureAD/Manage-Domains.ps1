@@ -36,7 +36,7 @@ $domains = Get-Content -Path C:\Temp\scripts\domains.txt
 #$domains
 
 #Verbinden mit Azure
-#Connect-AzureAD
+Connect-AzureAD
 
 # Menue aufrufen und Titel uebergeben
 Show-CustomMenu –menuname 'Azure Domain Menue'
