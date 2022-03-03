@@ -36,7 +36,9 @@ $domains = Get-Content -Path C:\Temp\scripts\domains.txt
 #$domains
 
 #Verbinden mit Azure
-Connect-AzureAD
+if($azureConnection.Account -eq $null){
+    $azureConnection = Connect-AzureAD
+}
 
 # Menue aufrufen und Titel uebergeben
 Show-CustomMenu –menuname 'Azure Domain Menue'
@@ -52,7 +54,7 @@ switch ($auswahl){
 
      '3' {ConfrimDomain $domains}
 
-     '4' {RemoveDomain $domains}
+     '4' {RemoveDomain $domains; Get-AzureADDomain | select name, isdefault}
      
      'q' {exit}
 
