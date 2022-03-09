@@ -74,3 +74,7 @@ $AutoDCNAMERecords = foreach ($autoddomain in $autoddomains) {
                                                          }
 
 $AutoDCNAMERecords | Out-Host
+
+############Abfrage der SOA-Records aus dem DNS
+Write-host "`nStart SOA Lookup" -ForegroundColor Magenta
+$domains | resolve-dnsname -Type SOA -Server 8.8.8.8 | Select Name, PrimaryServer, NameAdministrator, TTL | Sort Name
