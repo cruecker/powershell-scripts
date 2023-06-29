@@ -2,8 +2,7 @@
 #lizenzen = 'EXCHANGE_S_DESKLESS' oder 'EXCHANGE_S_ENTERPRISE'
 
 #Connect zum Azure AD
-Connect-MgGraph -ClientID b6a55586-11c5-4543-86f9-02e77867b6d7 -TenantId b9311996-a0ef-4437-85c4-8a5115fd70d2 -CertificateThumbprint b162a8b9ec4aee3b5ca609a2508e9f31e38c5d49
-#Get-MgUser -UserId meganb@M365x15799925.onmicrosoft.com -Property UserPrincipalName,MailboxSettings |  fl UserPrincipalName, @{Name = 'userPurpose'; Expression = {$_.MailboxSettings.userPurpose}}
+Connect-MgGraph -ClientID <ID hier> -TenantId <ID hier> -CertificateThumbprint <Thumbprint hier>
 
 #finde alle AAD User mit einer E-Mail Adresse 
 $Users = Get-MgUser -all -Filter "userType eq 'member'" | Where-Object {$_.Mail -like "*@*"}
