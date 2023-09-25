@@ -1,0 +1,29 @@
+#Funktion zum Auslesen aller Einträge über den @odata.nextLink
+function Get-GraphResourses {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)] [string]$uri
+    )
+    
+    Try {
+        # .Input
+        $run = 0
+        $content = (Invoke-WebRequest -Headers $Headers -Uri $uri -Verbose -UseBasicParsing).Content | ConvertFrom-Json
+        $response = [System.Collections.ArrayList]($content.value)
+        Write-verbose -message "Get Resources: $($content.value.count)"
+        do {
+            $run ++
+            if ($content.'@odata.nextLink') {
+                $content = (Invoke-WebRequest -Headers $Headers -Uri ($content.'@odata.nextLink') -Verbose -UseBasicParsing).Content | ConvertFrom-Json
+                $response += $content.value
+                Write-verbose -message "Get Resources: $($content.value.count)"
+            }
+        } until ( -not($content.'@odata.nextLink'))
+        Write-Verbose "Total Resources: $($response.count)"
+        return $response
+    }
+
+    Catch {
+        Throw "$($MyInvocation.MyCommand.Name) : Failed to get all Graph Resources. ErrosMessage: $_"
+    }
+}
